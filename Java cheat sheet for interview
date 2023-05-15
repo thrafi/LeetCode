@@ -3,6 +3,7 @@
 [String to Integer]: Integer.valueOf(s); 	     // return an Integer Object
 [int to String]:     String.valueOf(int)
 [char[] to String]:  String str = new String(chArray);
+[char to int]:       int num = Character.getNumericValue();    
 [double to int]:     int value = (int)double_value;
 [long to int]:       int intValue = (int) longValue;
 [list to array]:     String[] arr = list.toArray(new String[list.size()]);
