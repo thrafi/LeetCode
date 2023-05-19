@@ -3,7 +3,7 @@
 import React, { createContext, useState } from 'react';
 
 // Create the context
-const CounterContext = createContext();
+const CounterContext = createContext({});
 
 // Create the context provider component
 const CounterProvider = ({ children }) => {
