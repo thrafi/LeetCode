@@ -8,8 +8,10 @@
 [long to int]:       int intValue = (int) longValue;
 [list to array]:     String[] arr = list.toArray(new String[list.size()]);
 [List to array]:     Integer[] array = list.toArray(new Integer[list.size()]);
-[array to list]:     List<String> list = Arrays.asList(arr); # 可以直接罗列array的元素，比如：Arrays.asList("first", "second");
-                                                             # 非常适合于 convert single element to list
+[array to list]:     List<String> list = Arrays.asList(arr); 
+[List<Integer> to int[]] : int[] example1 = list.stream().mapToInt(i->i).toArray();
+# 可以直接罗列array的元素，比如：Arrays.asList("first", "second");
+# 非常适合于 convert single element to list
 # 注意 Arrays.asList 返回的list形式的数组，可以修改某个element，但不能 add 或 remove elements
 
 /********************** String ***************************/
