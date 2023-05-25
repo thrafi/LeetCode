@@ -111,6 +111,58 @@ const ObjectList = ({ objects }) => {
   );
 };
 
+//Map every key and value to a table in React
+function ObjectTable({ data }) {
+  return (
+    <table>
+      <tbody>
+        {Object.entries(data).map(([key, value]) => (
+          <tr key={key}>
+            <td>{key}</td>
+            <td>{value}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+//Map JSON response to an object
+const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Simulating a JSON API response
+    const jsonResponse = '[{"id": 1, "name": "John"}, {"id": 2, "name": "Jane"}, {"id": 3, "name": "Alice"}]';
+
+    // Parsing the JSON response
+    const parsedData = JSON.parse(jsonResponse);
+
+    // Creating an object where the id is the object key
+    const dataObject = {};
+    parsedData.forEach(item => {
+      dataObject[item.id] = item;
+    });
+
+    // Setting the data state
+    setData(dataObject);
+  }, []);
+
+  return (
+    <div>
+      <h1>Data Object</h1>
+      {data && (
+        <ul>
+          {Object.entries(data).map(([id, item]) => (
+            <li key={id}>
+              ID: {id}, Name: {item.name}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export default ObjectList;
 
 //UseReducer Example
@@ -177,4 +229,25 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
+//UseRef Example
+import React, { useRef } from 'react';
+
+function App() {
+  const inputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    // Access the input field using the ref and focus on it
+    inputRef.current.focus();
+  };
+
+  return (
+    <div>
+      <h1>Focus Example</h1>
+      <input type="text" ref={inputRef} />
+      <button onClick={handleButtonClick}>Focus Input</button>
+    </div>
+  );
+}
+
 
