@@ -502,3 +502,59 @@ read()
 and reads a maximum of length bytes into the array from that position. Again, the read(byte[], int offset, int length) method 
 returns an int telling how many bytes were actually read into array, remember to check this value before processing the read bytes.
 
+
+/********************* Java HTTP  ************************/
+class Solution {
+  public static JSONObject makeGetRequest(String apiUrl) throws IOException, InterruptedException, ParseException {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
+        String responseBody = response.body();
+
+        JSONParser parser = new JSONParser();
+        return (JSONObject) parser.parse(responseBody);
+    }
+
+    public static JSONObject makePostRequest(String apiUrl, Map<String, String> headers, JSONObject requestBody) throws IOException, InterruptedException, ParseException {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toJSONString(), StandardCharsets.UTF_8));
+
+        // Set request headers
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                requestBuilder.header(entry.getKey(), entry.getValue());
+            }
+        }
+
+        HttpRequest request = requestBuilder.build();
+
+        HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
+        String responseBody = response.body();
+
+        JSONParser parser = new JSONParser();
+        return (JSONObject) parser.parse(responseBody);
+    }
+
+  public static void main(String[] args) throws InterruptedException, ParseException  {
+        try {
+            String apiUrl = "https://sh-mockapi.azurewebsites.net/api/ticketprice?eventId=2";
+            JSONObject json = makeGetRequest(apiUrl);
+            System.out.println("API response:\n" + json.toJSONString());
+
+            // Example POST request
+            String postApiUrl = "https://httpbin.org/anything";
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("name", "John Doe");
+            requestBody.put("age", 30);
+            JSONObject postResponse = makePostRequest(postApiUrl, null, requestBody);
+            System.out.println("POST API response:\n" + postResponse.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
