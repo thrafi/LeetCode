@@ -560,7 +560,7 @@ class Solution {
             System.out.println("API response:\n" + json.toJSONString());
 
             // Example POST request
-            String postApiUrl = "https://httpbin.org/anything";
+            String postApiUrl = "https://postman-echo.com/post";
             JSONObject requestBody = new JSONObject();
             requestBody.put("name", "John Doe");
             requestBody.put("age", 30);
