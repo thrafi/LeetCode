@@ -504,8 +504,21 @@ returns an int telling how many bytes were actually read into array, remember to
 
 
 /********************* Java HTTP  ************************/
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 class Solution {
-  public static JSONObject makeGetRequest(String apiUrl) throws IOException, InterruptedException, ParseException {
+   public static JSONObject makeGetRequest(String apiUrl) throws IOException, InterruptedException, ParseException {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
@@ -540,7 +553,7 @@ class Solution {
         return (JSONObject) parser.parse(responseBody);
     }
 
-  public static void main(String[] args) throws InterruptedException, ParseException  {
+    public static void main(String[] args) throws InterruptedException, ParseException  {
         try {
             String apiUrl = "https://sh-mockapi.azurewebsites.net/api/ticketprice?eventId=2";
             JSONObject json = makeGetRequest(apiUrl);
