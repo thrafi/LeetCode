@@ -503,6 +503,53 @@ and reads a maximum of length bytes into the array from that position. Again, th
 returns an int telling how many bytes were actually read into array, remember to check this value before processing the read bytes.
 
 
+/********************* Java HTTP Async  ************************/
+class Solution {
+    public static CompletableFuture<String> makeAsyncGetRequest(String apiUrl) {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<String> makeAsyncPostRequest(String apiUrl, String requestBody) {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
+
+    public static void main(String[] args) throws Exception {
+        String apiUrl = "https://jsonplaceholder.typicode.com/posts/1";
+
+        // Asynchronous GET request
+        CompletableFuture<String> getResponse = makeAsyncGetRequest(apiUrl);
+        getResponse.thenAccept(response -> {
+            System.out.println("GET API response:\n" + response);
+        });
+
+        // Asynchronous POST request
+        String postApiUrl = "https://jsonplaceholder.typicode.com/posts";
+        String requestBody = "{\"title\":\"foo\",\"body\":\"bar\",\"userId\":1}";
+
+        CompletableFuture<String> postResponse = makeAsyncPostRequest(postApiUrl, requestBody);
+        postResponse.thenAccept(response -> {
+            System.out.println("POST API response:\n" + response);
+        });
+
+        // Wait for both requests to complete
+        CompletableFuture.allOf(getResponse, postResponse).join();
+    }
+
+
+
 /********************* Java HTTP  ************************/
 import java.io.IOException;
 import java.net.URI;
@@ -571,3 +618,12 @@ class Solution {
         }
     }
 }
+
+For parallel post requests:
+
+Map<Integer, JSONObject> map = new ConcurrentHashMap<Integer, JSONObject>();
+IntStream.range(0,5).parallel().forEach(action -> {
+  requestBody.put("number", action);
+  JSONObject postResponse = makePostRequest(postApiUrl, null, requestBody);
+  map.put(action, postResponse);
+});
