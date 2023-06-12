@@ -255,8 +255,14 @@ try
     e.printStackTrace();
 }
 
+// Read an entire file
+Path path = Paths.get(filePath);
+List<String> lines = Files.readAllLines(path);
+
+
+// Write a file
 try{
-    BufferedWriter out = new BufferedWriter(new FileWriter(outputfile));
+    BufferedWriter out = Files.newBufferedWriter(Path.of(pathName));
     for(String str : map.keySet()){
          out.write(str + " " + map.get(str));
          out.newLine();
